@@ -1,10 +1,12 @@
-module todo.htlkaindorf.todo {
+module todo.htlkaindorf.application {
     requires javafx.controls;
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
 
-    opens todo.htlkaindorf.todo to javafx.fxml;
-    exports todo.htlkaindorf.todo;
+    opens todo.htlkaindorf.application to javafx.fxml;
+    exports todo.htlkaindorf.application;
+    exports todo.htlkaindorf.application.beans;
+    exports todo.htlkaindorf.application.bl;
 }

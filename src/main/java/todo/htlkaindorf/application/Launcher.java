@@ -1,4 +1,4 @@
-package todo.htlkaindorf.todo;
+package todo.htlkaindorf.application;
 
 import javafx.application.Application;
 
