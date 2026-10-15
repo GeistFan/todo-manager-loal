@@ -4,6 +4,7 @@ module todo.htlkaindorf.application {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires static lombok;
 
     opens todo.htlkaindorf.application to javafx.fxml;
     exports todo.htlkaindorf.application;

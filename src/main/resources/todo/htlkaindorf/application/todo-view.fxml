@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 <VBox spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="todo.htlkaindorf.application.HelloController">
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
 
-    <!-- Überschrift & Liste -->
-    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Deine ToDos:" />
-    <ListView fx:id="listView" prefHeight="220.0" />
+    <!-- Filterleiste -->
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Label text="Filter nach Status:" />
+        <ComboBox fx:id="filterComboBox" promptText="Alle anzeigen" onAction="#onFilterChanged" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Speichern" onAction="#onSave" />
+        <Button text="Laden" onAction="#onLoad" />
+    </HBox>
 
-    <!-- Eingabebereich -->
+    <ListView fx:id="listView" prefHeight="200.0" />
+
+    <!-- Eingabe- und Aktionsbereich -->
     <VBox spacing="8.0" style="-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 10;">
-        <Label style="-fx-font-weight: bold;" text="Neues ToDo erfassen:" />
-        <TextField fx:id="titleField" promptText="Titel des ToDos..." />
-        <TextArea fx:id="descArea" prefRowCount="3" promptText="Beschreibung..." />
-        <DatePicker fx:id="datePicker" maxWidth="Infinity" />
+        <Label style="-fx-font-weight: bold;" text="Aufgabe verwalten:" />
+        <TextField fx:id="titleField" promptText="Titel..." />
+        <TextArea fx:id="descArea" prefRowCount="2" promptText="Beschreibung..." />
 
-        <!-- Aktionsbuttons -->
         <HBox spacing="10.0">
-            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddTodo" text="Hinzufügen" />
-            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDeleteTodo" text="Löschen" />
-            <Button fx:id="toggleButton" mnemonicParsing="false" onAction="#onToggleComplete" text="Erledigt umschalten" />
+            <ComboBox fx:id="prioComboBox" promptText="Priorität" />
+            <DatePicker fx:id="datePicker" />
+        </HBox>
+
+        <HBox spacing="10.0" style="-fx-padding: 5 0 0 0;">
+            <Button fx:id="addButton" text="Erstellen" onAction="#onAddTodo" />
+            <Button fx:id="nextStateButton" text="Status Weiter" onAction="#onNextState" />
+            <Button fx:id="pauseButton" text="Pausieren" onAction="#onPauseState" />
+            <Button fx:id="deleteButton" text="Löschen" onAction="#onDeleteTodo" />
         </HBox>
     </VBox>
 </VBox>
