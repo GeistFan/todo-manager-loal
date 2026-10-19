@@ -3,6 +3,7 @@ package todo.htlkaindorf.application.beans;
 import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Data
 public class TodoTask implements Serializable {
@@ -13,6 +14,7 @@ public class TodoTask implements Serializable {
     private String prioritaet;
     private LocalDate faelligkeit;
     private TaskState state;
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public TodoTask(String titel, String beschreibung, String prioritaet, LocalDate faelligkeit) {
         this.id = idCounter++;
@@ -20,12 +22,7 @@ public class TodoTask implements Serializable {
         this.beschreibung = beschreibung;
         this.prioritaet = prioritaet;
         this.faelligkeit = faelligkeit;
-        this.state = new OffenState(); // Startzustand
-    }
-
-    // Wichtig: Muss public sein, damit die States darauf zugreifen können!
-    public void setState(TaskState state) {
-        this.state = state;
+        this.state = new OffenState();
     }
 
     // State-Delegation (State Pattern)
@@ -41,5 +38,12 @@ public class TodoTask implements Serializable {
 
     public void pauseState() {
         state.pause(this);
+    }
+
+    @Override
+    public String toString() {
+        String statusName = (state != null) ? state.getStatusName() : "UNBEKANNT";
+        String dateStr = (faelligkeit != null) ? faelligkeit.format(dtf) : "Kein Datum";
+        return String.format("[%s] %s (Prio: %s, Fällig: %s)", statusName, titel, prioritaet, dateStr);
     }
 }
