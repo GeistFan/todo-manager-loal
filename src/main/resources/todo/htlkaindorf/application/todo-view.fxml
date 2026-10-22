@@ -23,7 +23,6 @@
         <ComboBox fx:id="filterComboBox" onAction="#onFilterChanged" promptText="Alle anzeigen" />
         <Region HBox.hgrow="ALWAYS" />
         <Button onAction="#onSave" text="Speichern" />
-        <Button onAction="#onLoad" text="Laden" />
     </HBox>
 
     <ListView fx:id="listView" prefHeight="398.0" prefWidth="500.0" />

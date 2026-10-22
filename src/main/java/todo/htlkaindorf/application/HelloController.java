@@ -1,5 +1,6 @@
 package todo.htlkaindorf.application;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
@@ -7,6 +8,10 @@ import todo.htlkaindorf.application.beans.*;
 import todo.htlkaindorf.application.bl.TodoManagerLogic;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 
 public class HelloController {
@@ -41,6 +46,44 @@ public class HelloController {
         });
 
         datePicker.setValue(LocalDate.now());
+
+        // Versuche letzten Save zu laden falls vorhanden
+        String appDataPath = System.getenv("APPDATA");
+
+        if (appDataPath == null) {
+            showCriticalError("The AppData Folder was not found!");
+        }
+
+        Path saveDirectory = Paths.get(appDataPath, "TodoManager");
+        Path saveFile = saveDirectory.resolve("todos.json");
+
+        try {
+            if (Files.notExists(saveDirectory)) {
+                Files.createDirectories(saveDirectory);
+            }
+
+            if (Files.notExists(saveFile)) {
+                Files.createFile(saveFile);
+
+            } else {
+                logic.loadFromFile(saveFile.toFile());
+            }
+
+        } catch (IOException e) {
+            showCriticalError("Error at generating file " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            showCriticalError("Error at loading file " + e.getMessage());
+        }
+    }
+
+    private void showCriticalError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Critical Error");
+        alert.setHeaderText("The Program can't be run");
+        alert.setContentText(message);
+        alert.showAndWait();
+        Platform.exit();
+        System.exit(1);
     }
 
     private void updateStateComboBox(TodoTask task) {
@@ -50,15 +93,7 @@ public class HelloController {
 
         TaskState currentState = task.getState();
 
-        if (currentState instanceof OffenState) {
-            stateComboBox.getItems().addAll("IN_BEARBEITUNG", "ERLEDIGT");
-        } else if (currentState instanceof InBearbeitungState) {
-            stateComboBox.getItems().addAll("PAUSIERT", "ERLEDIGT", "OFFEN");
-        } else if (currentState instanceof PausiertState) {
-            stateComboBox.getItems().addAll("IN_BEARBEITUNG", "ERLEDIGT", "OFFEN");
-        } else if (currentState instanceof ErledigtState) {
-            stateComboBox.getItems().addAll("OFFEN"); // Kann wieder geöffnet werden
-        }
+        stateComboBox.getItems().addAll("OFFEN", "IN_BEARBEITUNG", "ERLEDIGT");
 
         stateComboBox.setValue(task.getState().getStatusName());
 
@@ -134,6 +169,8 @@ public class HelloController {
     protected void onSave() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showSaveDialog(listView.getScene().getWindow());
+
+
         if (file != null) {
             try {
                 logic.saveToFile(file);
@@ -143,16 +180,16 @@ public class HelloController {
         }
     }
 
-    @FXML
-    protected void onLoad() {
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(listView.getScene().getWindow());
-        if (file != null) {
-            try {
-                logic.loadFromFile(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    @FXML
+//    protected void onLoad() {
+//        FileChooser fileChooser = new FileChooser();
+//        File file = fileChooser.showOpenDialog(listView.getScene().getWindow());
+//        if (file != null) {
+//            try {
+//                logic.loadFromFile(file);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 }

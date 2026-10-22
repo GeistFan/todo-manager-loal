@@ -19,8 +19,8 @@ public class TodoManagerLogic {
         this.filteredTasks = FXCollections.observableArrayList();
 
         // Testdaten
-        allTasks.add(new TodoTask("State Pattern implementieren", "Zustände und Übergänge definieren", "HOCH", LocalDate.now().plusDays(2)));
-        allTasks.add(new TodoTask("UI anpassen", "FXML Layout erweitern", "MITTEL", LocalDate.now().plusDays(4)));
+//        allTasks.add(new TodoTask("State Pattern implementieren", "Zustände und Übergänge definieren", "HOCH", LocalDate.now().plusDays(2)));
+//        allTasks.add(new TodoTask("UI anpassen", "FXML Layout erweitern", "MITTEL", LocalDate.now().plusDays(4)));
 
         filteredTasks.setAll(allTasks);
     }
@@ -54,7 +54,6 @@ public class TodoManagerLogic {
         }
     }
 
-    // Pflicht: Aufgaben speichern (z.B. serialisiert in Datei)
     public void saveToFile(File file) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             oos.writeObject(new ArrayList<>(allTasks));

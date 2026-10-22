@@ -61,8 +61,15 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>26</source>
+                    <target>26</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.48</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
@@ -74,7 +81,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>todo.htlkaindorf.todo/todo.htlkaindorf.application.HelloApplication</mainClass>
+                            <mainClass>todo.htlkaindorf.application.HelloApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -84,6 +91,26 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.4</version>
+                <configuration>
+                    <name>TodoManager</name>
+                    <appVersion>0.3</appVersion>
+                    <vendor>htlkaindorf</vendor>
+                    <mainClass>todo.htlkaindorf.application.HelloApplication</mainClass>
+                    <mainJar>${project.build.finalName}.jar</mainJar>
+                    <addModules>
+                        <addModule>javafx-controls</addModule>
+                        <addModule>javafx.fxml</addModule>
+                        <addModule>lombok</addModule>
+                    </addModules>
+                    <input>target/</input>
+                    <destination>target/dist</destination>
+                    <type>APP_IMAGE</type>
+                </configuration>
             </plugin>
         </plugins>
     </build>
