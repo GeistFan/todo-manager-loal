@@ -1,10 +1,12 @@
 package todo.htlkaindorf.application.beans;
 
-import javafx.concurrent.Task;
+import java.io.Serial;
 
 public class OffenState implements TaskState {
-    @Override
-    public void start(TodoTask task) {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Override public void start(TodoTask task) {
         task.setState(new InBearbeitungState());
     }
     @Override public void pause(TodoTask task) { /* Nicht erlaubt im Offen-Zustand */ }

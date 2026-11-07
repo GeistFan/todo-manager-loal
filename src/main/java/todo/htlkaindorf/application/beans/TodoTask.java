@@ -1,20 +1,25 @@
 package todo.htlkaindorf.application.beans;
 
 import lombok.Data;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Data
 public class TodoTask implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private static int idCounter = 1;
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private int id;
     private String titel;
     private String beschreibung;
     private String prioritaet;
     private LocalDate faelligkeit;
     private TaskState state;
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public TodoTask(String titel, String beschreibung, String prioritaet, LocalDate faelligkeit) {
         this.id = idCounter++;

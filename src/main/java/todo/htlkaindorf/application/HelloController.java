@@ -47,7 +47,7 @@ public class HelloController {
 
         datePicker.setValue(LocalDate.now());
 
-        // Versuche letzten Save zu laden falls vorhanden
+        // Versuche letzten Save zu laden, falls vorhanden
         String appDataPath = System.getenv("APPDATA");
 
         if (appDataPath == null) {
@@ -62,17 +62,19 @@ public class HelloController {
                 Files.createDirectories(saveDirectory);
             }
 
-            if (Files.notExists(saveFile)) {
-                Files.createFile(saveFile);
-
+            if (Files.exists(saveFile)) {
+//                logic.loadFromFile(saveFile.toFile());
+                logic.loadAutomatic(saveFile.toFile());
             } else {
-                logic.loadFromFile(saveFile.toFile());
+                Files.createFile(saveFile);
             }
+
+            logic.filterByStatus("ALLE");
 
         } catch (IOException e) {
             showCriticalError("Error at generating file " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            showCriticalError("Error at loading file " + e.getMessage());
+        } catch (Exception e) {
+            showCriticalError("General error: " + e.getMessage());
         }
     }
 
@@ -167,17 +169,28 @@ public class HelloController {
 
     @FXML
     protected void onSave() {
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showSaveDialog(listView.getScene().getWindow());
+//        FileChooser fileChooser = new FileChooser();
+//        File file = fileChooser.showSaveDialog(listView.getScene().getWindow());
+//
+//
+//        if (file != null) {
+//            try {
+//                logic.saveToFile(file);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
+        String appDataPath = System.getenv("APPDATA");
 
-        if (file != null) {
-            try {
-                logic.saveToFile(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (appDataPath == null) {
+            showCriticalError("The AppData Folder was not found!");
         }
+
+        Path saveDirectory = Paths.get(appDataPath, "TodoManager");
+        Path saveFile = saveDirectory.resolve("todos.json");
+
+        logic.saveAutomatic(saveFile.toFile());
     }
 
 //    @FXML

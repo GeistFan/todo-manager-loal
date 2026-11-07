@@ -60,12 +60,59 @@ public class TodoManagerLogic {
         }
     }
 
-    // Aufgaben laden
-    public void loadFromFile(File file) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            List<TodoTask> loaded = (List<TodoTask>) ois.readObject();
-            allTasks.setAll(loaded);
-            filteredTasks.setAll(loaded);
+    public void saveAutomatic(File file) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            // 1. "Kommentar" oder Metadaten als String in die Datei schreiben
+            oos.writeObject("METADATA: HTL Kaindorf TodoManager Backup - Nicht manuell bearbeiten!");
+
+            // 2. Eigentliche Task-Liste schreiben
+            oos.writeObject(new ArrayList<>(allTasks));
+        } catch (IOException e) {
+            System.err.println("Fehler beim automatischen Speichern:");
+            e.printStackTrace();
         }
     }
+
+    public void loadAutomatic(File file) {
+        if (file.exists() && file.length() > 0) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+
+                // 1. Den Kommentar/Metadaten aus dem Stream lesen und ignorieren (oder anzeigen)
+                String fileComment = (String) ois.readObject();
+                System.out.println("Gelesener Datei-Hinweis: " + fileComment);
+
+                // 2. Erst jetzt die echte Task-Liste einlesen
+                @SuppressWarnings("unchecked")
+                List<TodoTask> loaded = (List<TodoTask>) ois.readObject();
+                allTasks.setAll(loaded);
+
+                System.out.println("Automatisches Laden erfolgreich: " + loaded.size() + " Tasks geladen.");
+            } catch (Exception e) {
+                System.err.println("Fehler beim automatischen Laden.");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Keine Speicherdatei gefunden. Starte mit leerer Liste.");
+        }
+    }
+
+    // Aufgaben laden
+//    public void loadFromFile(File file) throws IOException, ClassNotFoundException {
+//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+//            List<TodoTask> loaded = (List<TodoTask>) ois.readObject();
+//            allTasks.setAll(loaded);
+//            filteredTasks.setAll(loaded);
+//        }
+//
+//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+//            List<TodoTask> loaded = (List<TodoTask>) ois.readObject();
+//            allTasks.setAll(loaded);
+//            filteredTasks.setAll(loaded);
+//            System.out.println("Erfolgreich geladen: " + loaded.size() + " Tasks.");
+//        } catch (Exception e) {
+//            // Gibt den echten Grund (z.B. NotSerializableException) in der Konsole aus!
+//            System.err.println("Fehler beim Laden der Datei:");
+//            e.printStackTrace();
+//        }
+//    }
 }

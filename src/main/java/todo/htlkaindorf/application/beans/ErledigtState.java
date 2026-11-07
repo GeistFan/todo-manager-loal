@@ -1,8 +1,11 @@
 package todo.htlkaindorf.application.beans;
 
-import javafx.concurrent.Task;
+import java.io.Serial;
 
 public class ErledigtState implements TaskState {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Override public void start(TodoTask task) { }
     @Override public void pause(TodoTask task) { }
     @Override public void complete(TodoTask task) { }
