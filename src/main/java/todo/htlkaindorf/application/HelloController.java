@@ -55,7 +55,7 @@ public class HelloController {
         }
 
         Path saveDirectory = Paths.get(appDataPath, "TodoManager");
-        Path saveFile = saveDirectory.resolve("todos.json");
+        Path saveFile = saveDirectory.resolve("todos.ser");
 
         try {
             if (Files.notExists(saveDirectory)) {
@@ -188,7 +188,7 @@ public class HelloController {
         }
 
         Path saveDirectory = Paths.get(appDataPath, "TodoManager");
-        Path saveFile = saveDirectory.resolve("todos.json");
+        Path saveFile = saveDirectory.resolve("todos.ser");
 
         logic.saveAutomatic(saveFile.toFile());
     }
