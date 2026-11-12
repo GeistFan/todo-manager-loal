@@ -27,14 +27,14 @@ public class TodoTask implements Serializable {
         this.beschreibung = beschreibung;
         this.prioritaet = prioritaet;
         this.faelligkeit = faelligkeit;
-        this.state = new OffenState();
+        this.state = new OpenState();
     }
 
     // State-Delegation (State Pattern)
     public void nextState() {
-        if (state instanceof OffenState) state.start(this);
-        else if (state instanceof InBearbeitungState) state.complete(this);
-        else if (state instanceof PausiertState) state.start(this);
+        if (state instanceof OpenState) state.start(this);
+        else if (state instanceof InProgressState) state.complete(this);
+        else if (state instanceof PausedState) state.start(this);
     }
 
     public void previousState() {

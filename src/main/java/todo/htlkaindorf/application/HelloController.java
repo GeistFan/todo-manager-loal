@@ -3,11 +3,9 @@ package todo.htlkaindorf.application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.FileChooser;
 import todo.htlkaindorf.application.beans.*;
 import todo.htlkaindorf.application.bl.TodoManagerLogic;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,7 +61,6 @@ public class HelloController {
             }
 
             if (Files.exists(saveFile)) {
-//                logic.loadFromFile(saveFile.toFile());
                 logic.loadAutomatic(saveFile.toFile());
             } else {
                 Files.createFile(saveFile);
@@ -112,16 +109,16 @@ public class HelloController {
         if (selectedTask != null && targetState != null) {
             switch (targetState) {
                 case "OFFEN":
-                    selectedTask.setState(new OffenState());
+                    selectedTask.setState(new OpenState());
                     break;
                 case "IN_BEARBEITUNG":
-                    selectedTask.setState(new InBearbeitungState());
+                    selectedTask.setState(new InProgressState());
                     break;
                 case "PAUSIERT":
-                    selectedTask.setState(new PausiertState());
+                    selectedTask.setState(new PausedState());
                     break;
                 case "ERLEDIGT":
-                    selectedTask.setState(new ErledigtState());
+                    selectedTask.setState(new FinishedState());
                     break;
             }
 
@@ -169,18 +166,6 @@ public class HelloController {
 
     @FXML
     protected void onSave() {
-//        FileChooser fileChooser = new FileChooser();
-//        File file = fileChooser.showSaveDialog(listView.getScene().getWindow());
-//
-//
-//        if (file != null) {
-//            try {
-//                logic.saveToFile(file);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         String appDataPath = System.getenv("APPDATA");
 
         if (appDataPath == null) {
@@ -192,17 +177,4 @@ public class HelloController {
 
         logic.saveAutomatic(saveFile.toFile());
     }
-
-//    @FXML
-//    protected void onLoad() {
-//        FileChooser fileChooser = new FileChooser();
-//        File file = fileChooser.showOpenDialog(listView.getScene().getWindow());
-//        if (file != null) {
-//            try {
-//                logic.loadFromFile(file);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 }

@@ -18,10 +18,6 @@ public class TodoManagerLogic {
         this.allTasks = FXCollections.observableArrayList();
         this.filteredTasks = FXCollections.observableArrayList();
 
-        // Testdaten
-//        allTasks.add(new TodoTask("State Pattern implementieren", "Zustände und Übergänge definieren", "HOCH", LocalDate.now().plusDays(2)));
-//        allTasks.add(new TodoTask("UI anpassen", "FXML Layout erweitern", "MITTEL", LocalDate.now().plusDays(4)));
-
         filteredTasks.setAll(allTasks);
     }
 
@@ -29,9 +25,9 @@ public class TodoManagerLogic {
         return filteredTasks;
     }
 
-    public void addTask(String titel, String beschreibung, String prio, LocalDate faelligkeit) {
-        if (titel != null && !titel.trim().isEmpty()) {
-            TodoTask newTask = new TodoTask(titel.trim(), beschreibung, prio, faelligkeit);
+    public void addTask(String title, String description, String priority, LocalDate dueDate) {
+        if (title != null && !title.trim().isEmpty()) {
+            TodoTask newTask = new TodoTask(title.trim(), description, priority, dueDate);
             allTasks.add(newTask);
             filteredTasks.add(newTask);
         }
@@ -95,24 +91,4 @@ public class TodoManagerLogic {
             System.out.println("Keine Speicherdatei gefunden. Starte mit leerer Liste.");
         }
     }
-
-    // Aufgaben laden
-//    public void loadFromFile(File file) throws IOException, ClassNotFoundException {
-//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-//            List<TodoTask> loaded = (List<TodoTask>) ois.readObject();
-//            allTasks.setAll(loaded);
-//            filteredTasks.setAll(loaded);
-//        }
-//
-//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-//            List<TodoTask> loaded = (List<TodoTask>) ois.readObject();
-//            allTasks.setAll(loaded);
-//            filteredTasks.setAll(loaded);
-//            System.out.println("Erfolgreich geladen: " + loaded.size() + " Tasks.");
-//        } catch (Exception e) {
-//            // Gibt den echten Grund (z.B. NotSerializableException) in der Konsole aus!
-//            System.err.println("Fehler beim Laden der Datei:");
-//            e.printStackTrace();
-//        }
-//    }
 }
