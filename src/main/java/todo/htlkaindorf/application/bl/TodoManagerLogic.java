@@ -50,12 +50,6 @@ public class TodoManagerLogic {
         }
     }
 
-    public void saveToFile(File file) throws IOException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
-            oos.writeObject(new ArrayList<>(allTasks));
-        }
-    }
-
     public void saveAutomatic(File file) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             // 1. "Kommentar" oder Metadaten als String in die Datei schreiben
